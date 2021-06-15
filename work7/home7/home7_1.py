@@ -18,7 +18,7 @@ from envparse import Env
 from abc import ABC, abstractmethod
 
 env = Env()
-PASS = env.str("fsdf@rfd")
+PASS = env.str("******")
 DB_URL = env.str("SOME_DB_URL", default="postgres://postgres:@localhost:5432/postgres")
 connect = psycopg2.connect(DB_URL)
 
@@ -29,13 +29,13 @@ CREATE TABLE IF NOT EXISTS orders (
     updated_dt,
     order_type TEXT NOT NULL,
     description TEXT,
-    status text NOT NULL,
+    status TEXT NOT NULL,
     serial_no INTEGER NOT NULL,
     creator_id INTEGER NOT NULL,
-    foreign key (creator_id) references employees (employee_id)
+    FOREIGN KEY (creator_id) REFERENCES employees (employee_id)
     );
 CREATE TABLE IF NOT EXISTS employees (
-    employee_id SERIAL PRIMARY key,
+    employee_id SERIAL PRIMARY KEY,
     fio TEXT NOT NULL,
     position TEXT,
     department_id INTEGER NOT NULL,
