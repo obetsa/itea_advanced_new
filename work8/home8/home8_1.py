@@ -16,7 +16,7 @@ def decorator(TestClass):
             f.seek(0)
             f.write(f'{datetime.now().strftime("%Y-%m-%d %H:%M")}'
                     f' Создан экземпляр класса {TestClass}'
-                    f' по адресу памяти {TestClass()}')
+                    f' по адресу памяти {TestClass()}\n')
         return TestClass(*args, **kwargs)
     return wrapper
 
