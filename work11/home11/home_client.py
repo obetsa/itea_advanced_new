@@ -1,5 +1,4 @@
 import socket
-from datetime import datetime
 from time import sleep
 import sys
 
@@ -14,15 +13,9 @@ sock = socket.create_connection(("127.0.0.1", 10002), timeout=5)
 sock.settimeout(2)
 
 with sock:
-    # while True:
-    # data_for_sending = str(datetime.now()).encode("utf-8")
-    # sock.sendall(data_for_sending)
-    # logger.info(f"I am send that data: {data_for_sending}")
-    # sleep(1)
     with open('client.txt', 'r') as f:
         for i in f.readlines():
             data_for_sending = i.strip('\n').encode("utf-8")
             sock.sendall(data_for_sending)
             logger.info(f"send data {data_for_sending}")
             sleep(1)
-

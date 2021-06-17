@@ -25,16 +25,5 @@ with conn, sock:
             break
         with open('server.txt', 'a') as f:
             logger.info(f"received data: {received_data}")
+            f.write(f'{datetime.datetime.now()} {received_data.decode("utf-8")}')
             print(f'{datetime.datetime.now()} {received_data.decode("utf-8")}', file=f)
-
-        # data = conn.recv(1024)
-        # if not data:
-        #     print("Ничего нет")
-        #     break
-        # print(data.decode("utf-8"))
-
-        # received_data = conn.recv(1024)
-        # with open('server.txt', 'a') as f:
-        #     for i in f.readlines():
-        #         logger.info(f"received data {received_data}")
-        #         print(received_data.decode("utf-8"))
