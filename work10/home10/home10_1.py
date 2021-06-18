@@ -6,3 +6,19 @@
 
 
 Для выполнения ДЗ можно использовать интеграцию с любой изученной БД (sqlite, Postgresql, Mongo)"""
+
+from flask import Flask, request
+from datetime import datetime
+import mongoengine as me
+
+me.connect("home9")
+
+app = Flask(__name__)
+
+
+@app.route('/')
+def hello():
+    return f"{datetime.now()}"
+
+if __name__ == "__main__":
+    app.run(debug=True)
