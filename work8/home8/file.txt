@@ -1,3 +1,4 @@
 2021-06-17 16:17 Создан экземпляр класса <class '__main__.TestClass'> по адресу памяти <__main__.TestClass object at 0x0000020ADEBE0E50>
 2021-06-17 16:17 Создан экземпляр класса <class '__main__.TestClass'> по адресу памяти <__main__.TestClass object at 0x000001A57EC40E50>
 2021-06-17 16:17 Создан экземпляр класса <class '__main__.TestClass'> по адресу памяти <__main__.TestClass object at 0x000001D98D1F0E50>
+2021-06-22 14:53 Создан экземпляр класса <class '__main__.TestClass'> по адресу памяти <__main__.TestClass object at 0x000002D59A270E50>

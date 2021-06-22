@@ -13,7 +13,6 @@ from datetime import datetime
 def decorator(TestClass):
     def wrapper(*args, **kwargs):
         with open('file.txt', 'a', encoding="utf-8") as f:
-            f.seek(0)
             f.write(f'{datetime.now().strftime("%Y-%m-%d %H:%M")}'
                     f' Создан экземпляр класса {TestClass}'
                     f' по адресу памяти {TestClass()}\n')
@@ -23,7 +22,6 @@ def decorator(TestClass):
 
 @decorator
 class TestClass:
-    def __init__(self):
         pass
 
 c = TestClass()
