@@ -2,7 +2,6 @@ import pytest
 
 from work3.home3.home3_2 import Matrix
 
-
 @pytest.mark.parametrize(
     "first_matrix, second_matrix, result_matrix", [
         (
