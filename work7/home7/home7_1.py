@@ -18,8 +18,7 @@ from envparse import Env
 from abc import ABC, abstractmethod
 
 env = Env()
-PASS = env.str("******")
-DB_URL = env.str("SOME_DB_URL", default="postgres://postgres:@localhost:5432/postgres")
+DB_URL = env.str("SOME_DB_URL", default="postgres://postgres:12345678@localhost:5432/postgres")
 connect = psycopg2.connect(DB_URL)
 
 """
