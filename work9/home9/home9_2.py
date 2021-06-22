@@ -24,7 +24,10 @@ department = [
     {"department_name": "IT1"},
     {"department_name": "IT2"},
     {"department_name": "IT1"},
-    {"department_name": "IT3"}
+    {"department_name": "IT3"},
+    {"department_name": "IT1"},
+    {"department_name": "IT3"},
+    {"department_name": "IT2"}
 ]
 
 employees = [
@@ -87,30 +90,61 @@ orders = [
 class Department(me.Document):
     department_name = me.StringField(required=True)
 
+    def __str__(self):
+        return f"department_name: {self.department_name}"
+
+    def save(self, *args, **kwargs):
+        return super().save(*args, **kwargs)
+
+    def update(self, **kwargs):
+        return super().update(**kwargs)
+
+    def delete(self, *args, **kwargs):
+        return super().delete(*args, **kwargs)
 
 class Employees(me.Document):
     fio = me.StringField(required=True)
     position = me.StringField(required=True)
-    department_id = me.ReferenceField(Department, required=True)
+    department_id = me.ReferenceField(Department, reverse_delete_rule=me.CASCADE)
 
     def __str__(self):
         return f"fio: {self.fio} | position: {self.position}"
 
     def __repr__(self):
-        return f"Машинный вывод информации: fio: {self.fio} | password: {self.position}"
+        return f"Машинный вывод информации: fio: {self.fio} | position: {self.position}"
+
+    def save(self, *args, **kwargs):
+        return super().save(*args, **kwargs)
+
+    def update(self, **kwargs):
+        return super().update(**kwargs)
+
+    def delete(self, *args, **kwargs):
+        return super().delete(*args, **kwargs)
 
 
 class Orders(me.Document):
-    created_dt = me.DateTimeField()
+    created_dt = me.DateTimeField(required=True)
+    updated_dt = me.DateTimeField(default=None)
     order_type = me.StringField(required=True)
     description = me.StringField()
-    status = me.StringField(default=[])
+    status = me.StringField(required=True)
     serial_no = me.IntField(default=0)
-    creator_id = me.ReferenceField(Employees, required=True)
+    creator_id = me.ReferenceField(Employees, reverse_delete_rule=me.CASCADE)
+
+    def __str__(self):
+        return f"created_dt: {self.created_dt} | order_type: {self.order_type} | description: {self.description} | " \
+               f"status: {self.status} | serial_no: {self.serial_no} | creator_id: {self.creator_id}"
 
     def save(self, *args, **kwargs):
-        self.created_at = dt.now()
+        self.created_dt = dt.now()
         return super().save(*args, **kwargs)
+
+    def update(self, **kwargs):
+        return super().update(**kwargs)
+
+    def delete(self, *args, **kwargs):
+        return super().delete(*args, **kwargs)
 
 
 # for user_profile_data in zip(department, employees):
