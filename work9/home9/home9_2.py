@@ -87,22 +87,29 @@ orders = [
      }
 ]
 
+
 class Department(me.Document):
+    created_dt = me.DateTimeField(required=True)
+    updated_dt = me.DateTimeField(default=None)
     department_name = me.StringField(required=True)
 
     def __str__(self):
         return f"department_name: {self.department_name}"
 
-    def save(self, *args, **kwargs):
-        return super().save(*args, **kwargs)
-
-    def update(self, **kwargs):
-        return super().update(**kwargs)
-
-    def delete(self, *args, **kwargs):
-        return super().delete(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     self.created_dt = dt.now()
+    #     return super().save(*args, **kwargs)
+    #
+    # def update(self, **kwargs):
+    #     self.updated_dt = dt.now()
+    #     return super().update(**kwargs)
+    #
+    # def delete(self, *args, **kwargs):
+    #     return super().delete(*args, **kwargs)
 
 class Employees(me.Document):
+    created_dt = me.DateTimeField(required=True)
+    updated_dt = me.DateTimeField(default=None)
     fio = me.StringField(required=True)
     position = me.StringField(required=True)
     department_id = me.ReferenceField(Department, reverse_delete_rule=me.CASCADE)
@@ -113,14 +120,16 @@ class Employees(me.Document):
     def __repr__(self):
         return f"Машинный вывод информации: fio: {self.fio} | position: {self.position}"
 
-    def save(self, *args, **kwargs):
-        return super().save(*args, **kwargs)
-
-    def update(self, **kwargs):
-        return super().update(**kwargs)
-
-    def delete(self, *args, **kwargs):
-        return super().delete(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     self.created_dt = dt.now()
+    #     return super().save(*args, **kwargs)
+    #
+    # def update(self, **kwargs):
+    #     self.updated_dt = dt.now()
+    #     return super().update(**kwargs)
+    #
+    # def delete(self, *args, **kwargs):
+    #     return super().delete(*args, **kwargs)
 
 
 class Orders(me.Document):
@@ -136,24 +145,29 @@ class Orders(me.Document):
         return f"created_dt: {self.created_dt} | order_type: {self.order_type} | description: {self.description} | " \
                f"status: {self.status} | serial_no: {self.serial_no} | creator_id: {self.creator_id}"
 
-    def save(self, *args, **kwargs):
-        self.created_dt = dt.now()
-        return super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     self.created_dt = dt.now()
+    #     return super().save(*args, **kwargs)
+    #
+    # def update(self, **kwargs):
+    #     return super().update(**kwargs)
+    #
+    # def delete(self, *args, **kwargs):
+    #     return super().delete(*args, **kwargs)
 
-    def update(self, **kwargs):
-        return super().update(**kwargs)
-
-    def delete(self, *args, **kwargs):
-        return super().delete(*args, **kwargs)
 
 
-# for user_profile_data in zip(department, employees):
-#     print(user_profile_data)
-#     department_id = Department(**user_profile_data[0]).save()
-#     user = Employees(department_id=department_id, **user_profile_data[1]).save()
-
+for user_profile_data in zip(department, employees):
+    print(user_profile_data)
+    department_id = Department(**user_profile_data[0]).save()
+    user = Employees(department_id=department_id, **user_profile_data[1]).save()
 
 for orders_data in zip(employees, orders):
     print(orders_data)
     creator_id = Employees(**orders_data[0]).save()
     order = Orders(creator_id=creator_id, **orders_data[1]).save()
+
+depp = Department(department_name='IT15').save()
+dep = Department.objects(department_name='IT15')
+dep.update(department_name='IT13')
+# dep = Department.objects.all().delete()
