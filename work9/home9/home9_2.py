@@ -96,9 +96,12 @@ class Department(me.Document):
     def __str__(self):
         return f"department_name: {self.department_name}"
 
-    # def save(self, *args, **kwargs):
-    #     self.created_dt = dt.now()
-    #     return super().save(*args, **kwargs)
+    def __repr__(self):
+        return f"Машинный вывод информации: department_name: {self.department_name}"
+
+    def save(self, *args, **kwargs):
+        self.created_dt = dt.now()
+        return super().save(*args, **kwargs)
     #
     # def update(self, **kwargs):
     #     self.updated_dt = dt.now()
@@ -120,9 +123,9 @@ class Employees(me.Document):
     def __repr__(self):
         return f"Машинный вывод информации: fio: {self.fio} | position: {self.position}"
 
-    # def save(self, *args, **kwargs):
-    #     self.created_dt = dt.now()
-    #     return super().save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        self.created_dt = dt.now()
+        return super().save(*args, **kwargs)
     #
     # def update(self, **kwargs):
     #     self.updated_dt = dt.now()
@@ -145,9 +148,14 @@ class Orders(me.Document):
         return f"created_dt: {self.created_dt} | order_type: {self.order_type} | description: {self.description} | " \
                f"status: {self.status} | serial_no: {self.serial_no} | creator_id: {self.creator_id}"
 
-    # def save(self, *args, **kwargs):
-    #     self.created_dt = dt.now()
-    #     return super().save(*args, **kwargs)
+    def __repr__(self):
+        return f"Машинный вывод информации: created_dt: {self.created_dt} | order_type: {self.order_type} | " \
+               f"description: {self.description} | " f"status: {self.status} | serial_no: {self.serial_no} | " \
+               f"creator_id: {self.creator_id}"
+
+    def save(self, *args, **kwargs):
+        self.created_dt = dt.now()
+        return super().save(*args, **kwargs)
     #
     # def update(self, **kwargs):
     #     return super().update(**kwargs)
@@ -171,3 +179,4 @@ depp = Department(department_name='IT15').save()
 dep = Department.objects(department_name='IT15')
 dep.update(department_name='IT13')
 # dep = Department.objects.all().delete()
+
