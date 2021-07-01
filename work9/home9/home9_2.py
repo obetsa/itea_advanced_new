@@ -102,13 +102,7 @@ class Department(me.Document):
     def save(self, *args, **kwargs):
         self.created_dt = dt.now()
         return super().save(*args, **kwargs)
-    #
-    # def update(self, **kwargs):
-    #     self.updated_dt = dt.now()
-    #     return super().update(**kwargs)
-    #
-    # def delete(self, *args, **kwargs):
-    #     return super().delete(*args, **kwargs)
+
 
 class Employees(me.Document):
     created_dt = me.DateTimeField(required=True)
@@ -126,13 +120,6 @@ class Employees(me.Document):
     def save(self, *args, **kwargs):
         self.created_dt = dt.now()
         return super().save(*args, **kwargs)
-    #
-    # def update(self, **kwargs):
-    #     self.updated_dt = dt.now()
-    #     return super().update(**kwargs)
-    #
-    # def delete(self, *args, **kwargs):
-    #     return super().delete(*args, **kwargs)
 
 
 class Orders(me.Document):
@@ -156,14 +143,16 @@ class Orders(me.Document):
     def save(self, *args, **kwargs):
         self.created_dt = dt.now()
         return super().save(*args, **kwargs)
-    #
+
     # def update(self, **kwargs):
+    #     self.updated_dt = dt.now()
     #     return super().update(**kwargs)
     #
     # def delete(self, *args, **kwargs):
     #     return super().delete(*args, **kwargs)
 
 
+"""Создания:"""
 
 for user_profile_data in zip(department, employees):
     print(user_profile_data)
@@ -175,8 +164,24 @@ for orders_data in zip(employees, orders):
     creator_id = Employees(**orders_data[0]).save()
     order = Orders(creator_id=creator_id, **orders_data[1]).save()
 
-depp = Department(department_name='IT15').save()
+"""Написать функции, которые будут:
+создавать/изменять/удалять новую заявку/сотрудника/департамент"""
+
+# department
+depp = Department(department_name='IT16').save()
 dep = Department.objects(department_name='IT15')
 dep.update(department_name='IT13')
-# dep = Department.objects.all().delete()
+dep = Department.objects.all().delete()
+
+# employees
+empl = Employees.objects(fio='Andrii', position='chef')
+empl.update(position='boss')
+
+# orders
+orde1 = Orders(order_type='order_type2', description='some', status='Active', serial_no='77777',
+             creator_id='60d45cf006e8462e16157ad2').save()
+orde = Orders.objects(order_type='order_type2')
+orde.update(order_type='order_type3')
+orde = Orders.objects.all().delete()
+
 
