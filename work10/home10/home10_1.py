@@ -125,6 +125,7 @@ def time():
 def check_method():
     return f"{request.method}"
 
+
 @app.route('/create_employees_data', methods=["POST"])
 def create_employees_data():
     for user_profile_data in zip(department, employees):
@@ -148,7 +149,7 @@ def create_department():
 @app.route('/update_department')
 def update_department():
     dep = Department.objects(department_name='IT16')
-    dep.update(department_name='IT17')
+    dep.update(updated_dt=dt.now(), department_name='IT17')
     return "OK"
 
 @app.route("/delete_department_data", methods=["GET", "DELETE"])
@@ -161,11 +162,51 @@ def department_by_id(department_id):
     dep = Department.objects(id=department_id)
     return f"Result: {dep}"
 
+
+@app.route('/create_employee', methods=["GET", "POST"])
+def create_employee():
+    Employees(created_dt=dt.now(), fio='Volodia', position='gamer').save()
+    return "OK"
+
+@app.route('/update_employees')
+def update_employees():
+    emp = Employees.objects(fio='Volodia', position='gamer' )
+    emp.update(updated_dt=dt.now(), department_name='Zhenia', position='fytbotbolist')
+    return "OK"
+
+@app.route("/delete_employees_data", methods=["GET", "DELETE"])
+def delete_employees_data():
+    Employees.objects.all().delete()
+    return "OK"
+
 @app.route("/employee_by_fio/<string:fio>", methods=['GET'])
 def employee_by_fio(fio):
     emp = Employees.objects(fio=fio)
     print(emp)
     return f"Result: {emp}"
+
+@app.route('/create_orders', methods=["GET", "POST"])
+def create_orders():
+    Orders(created_dt=dt.now(), order_type='order_type_1', description='something', status='Active', serial_no='99999',
+           creator_id='60d45cef06e8462e85692ac9').save()
+    return "OK"
+
+@app.route('/update_orders')
+def update_orders():
+    orde = Orders.objects(status='Active', serial_no='99999')
+    orde.update(updated_dt=dt.now(), status='Closed', serial_no='78521')
+    return "OK"
+
+@app.route("/delete_orders_data", methods=["GET", "DELETE"])
+def delete_orders_data():
+    Orders.objects.all().delete()
+    return "OK"
+
+@app.route("/orders_by_serial_no/<int:serial_no>", methods=['GET'])
+def orders_by_serial_no(serial_no):
+    orde = Orders.objects(serial_no=serial_no)
+    print(orde)
+    return f"Result: {orde}"
 
 
 if __name__ == "__main__":
