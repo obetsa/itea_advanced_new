@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 import json
 from datetime import datetime
 
-DB_URL = "postgresql://postgres:12345678@localhost:5432/postgres"
+DB_URL = "postgresql://postgres:12345678@localhost:5432/order_service_db"
 
 app = Flask(__name__)
 
