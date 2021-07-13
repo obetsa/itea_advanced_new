@@ -144,13 +144,6 @@ class Orders(me.Document):
         self.created_dt = dt.now()
         return super().save(*args, **kwargs)
 
-    # def update(self, **kwargs):
-    #     self.updated_dt = dt.now()
-    #     return super().update(**kwargs)
-    #
-    # def delete(self, *args, **kwargs):
-    #     return super().delete(*args, **kwargs)
-
 
 """Создания:"""
 
@@ -166,22 +159,101 @@ for orders_data in zip(employees, orders):
 
 """Написать функции, которые будут:
 создавать/изменять/удалять новую заявку/сотрудника/департамент"""
-
 # department
-depp = Department(department_name='IT16').save()
-dep = Department.objects(department_name='IT15')
-dep.update(department_name='IT13')
-dep = Department.objects.all().delete()
+
+
+def create_dep():
+    Department(department_name='IT16').save()
+
+
+def update_dep():
+    dep = Department.objects(department_name='IT15')
+    dep.update(department_name='IT13')
+
+
+def delete_dep():
+    Department.objects.all().delete()
+
 
 # employees
-empl = Employees.objects(fio='Andrii', position='chef')
-empl.update(position='boss')
+
+
+def create_empl():
+    Department(fio='Andrii', position='chef').save()
+
+
+def update_empl():
+    empl = Employees.objects(fio='Andrii', position='chef')
+    empl.update(position='boss')
+
+
+def delete_empl():
+    Employees.objects.all().delete()
+
 
 # orders
-orde1 = Orders(order_type='order_type2', description='some', status='Active', serial_no='77777',
-             creator_id='60d45cf006e8462e16157ad2').save()
-orde = Orders.objects(order_type='order_type2')
-orde.update(order_type='order_type3')
-orde = Orders.objects.all().delete()
 
 
+def create_orders():
+    Orders(order_type='order_type2', description='some', status='Active', serial_no='77777',
+           creator_id='60d45cf006e8462e16157ad2').save()
+
+
+def update_orders():
+    orde = Orders.objects(order_type='order_type2')
+    orde.update(order_type='order_type3')
+
+
+def delete_orders():
+    Orders.objects.all().delete()
+
+
+"""All in json"""
+
+
+def employee_json():
+    data_from_mong_employee = Employees.objects()
+    for obj in data_from_mong_employee:
+        print(obj)
+        js_data = obj.to_json()
+        print(type(js_data), js_data)
+
+
+def department_json():
+    data_from_mong_department = Department.objects()
+    for obj in data_from_mong_department:
+        print(obj)
+        js_data = obj.to_json()
+        print(type(js_data), js_data)
+
+
+def orders_json():
+    data_from_mong_orders = Orders.objects()
+    for obj in data_from_mong_orders:
+        print(obj)
+        js_data = obj.to_json()
+        print(type(js_data), js_data)
+
+
+"""Id employee in json"""
+
+
+def json_id_employee(id_e):
+    res = Employees.objects.get(pk=id_e)
+    res_json = json.loads(res.to_json())
+    with open(f"{id}.json", "w") as json_f:
+        json.dump(res_json, json_f)
+
+
+def json_id_department(id_e):
+    res = Department.objects.get(pk=id_e)
+    res_json = json.loads(res.to_json())
+    with open(f"{id}.json", "w") as json_f:
+        json.dump(res_json, json_f)
+
+
+def json_id_orders(id_o):
+    res = Orders.objects.get(pk=id_o)
+    res_json = json.loads(res.to_json())
+    with open(f"{id}.json", "w") as json_f:
+        json.dump(res_json, json_f)
