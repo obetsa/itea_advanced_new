@@ -188,7 +188,7 @@ def department_by_id(department_id):
 
 @app.route('/create_employee', methods=["GET", "POST"])
 def create_employee():
-    Employees(created_dt=dt.now(), fio='Vika', position='yborshchitsa').save()
+    Employees(created_dt=dt.now(), fio='Yana', position='economist').save()
     return "OK"
 
 
