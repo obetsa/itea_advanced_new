@@ -1,7 +1,7 @@
 """Перевести все существующие модели (Заявки, Департаменты, Сотрудники) на Flask-SQLAlchemy.
 Перевести все ручки Flask-приложения из прошлого ДЗ на использование этих моделей.
 """
-from envparse import Env
+
 from flask import Flask, request, render_template, Response
 from flask_sqlalchemy import SQLAlchemy
 import json
@@ -20,6 +20,7 @@ class Departments(db.Model):
     department_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     department_name = db.Column(db.String(75), unique=True)
 
+
 class Employees(db.Model):
     employee_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     fio = db.Column(db.String(50), nullable=False, unique=True)
@@ -37,9 +38,11 @@ class Orders(db.Model):
     serial_no = db.Column(db.Integer, nullable=False, unique=True)
     creator_id = db.Column(db.Integer, db.ForeignKey('employees.employee_id'), nullable=False)
 
+
 @app.route('/')
 def index():
     return render_template("index.html")
+
 
 @app.route("/create_departments", methods=["POST"])
 def create_departments():
@@ -53,13 +56,14 @@ def create_departments():
     elif request.method == "GET":
         return Response("Ничего не найдено", status=404)
 
+
 @app.route('/create_employee', methods=['POST'])
 def create_employee():
     if request.method == 'POST':
         employees_data = json.loads(request.data)
         employee_profile = Employees(fio=employees_data['fio'],
-                                    position=employees_data['position'],
-                                    department_id=employees_data['department_id'])
+                                     position=employees_data['position'],
+                                     department_id=employees_data['department_id'])
         db.session.add(employee_profile)
         db.session.flush()
         db.session.commit()
@@ -67,24 +71,24 @@ def create_employee():
     elif request.method == "GET":
         return Response("Ничего не найдено", status=404)
 
+
 @app.route('/create_order', methods=['POST'])
 def create_order():
     if request.method == 'POST':
         order_data = json.loads(request.data)
         order_profile = Orders(create_dt=order_data['create_dt'],
-                              order_type=order_data['order_type'],
-                              description=order_data['description'],
-                              status=order_data['status'],
-                              serial_no=order_data['serial_no'],
-                              creator_id=order_data['creator_id'],
-                              )
+                               order_type=order_data['order_type'],
+                               description=order_data['description'],
+                               status=order_data['status'],
+                               serial_no=order_data['serial_no'],
+                               creator_id=order_data['creator_id'],
+                               )
         db.session.add(order_profile)
         db.session.flush()
         db.session.commit()
         return render_template("index.html", order_data=order_data)
     elif request.method == "GET":
         return Response("Ничего не найдено", status=404)
-
 
 
 if __name__ == '__main__':
