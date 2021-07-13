@@ -16,7 +16,9 @@ connect = psycopg2.connect(DB_URL)
 
 app = Flask(__name__)
 
-SELECT_QUERY = sql.SQL('''SELECT * FROM order_service_db.departments, order_service_db.employees, order_service_db.orders ''')
+SELECT_QUERY = sql.SQL('''SELECT * FROM order_service_db.departments, order_service_db.employees, 
+order_service_db.orders ''')
+
 
 class Departments:
     # SELECT_QUERY_departments = """SELECT * FROM order_service_db.departments"""
@@ -60,7 +62,7 @@ def index():
 
 
 @app.route('/all')
-def all():
+def all_data():
     with connect, connect.cursor() as cursor:
         cursor.execute(SELECT_QUERY, )
         res = cursor.fetchall()
