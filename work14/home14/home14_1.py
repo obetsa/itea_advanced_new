@@ -44,6 +44,15 @@ def index():
     return render_template("index.html")
 
 
+def dep_get_dict(d):
+    return {"Name": d.department_name, "Id": d.department_id, "Create date": str(d.create_dt)}
+
+
+@app.route("/departments/all", methods=["GET"])
+def dep_get_data():
+    return render_template('department.html', lst=[dep_get_dict(i) for i in Departments.query.all()])
+
+
 @app.route("/create_departments", methods=["POST"])
 def create_departments():
     if request.method == 'POST':
@@ -52,7 +61,7 @@ def create_departments():
         db.session.add(department_profile)
         db.session.flush()
         db.session.commit()
-        return render_template("index.html", departments_data=departments_data)
+        return render_template("departments.html", departments_data=departments_data)
     elif request.method == "GET":
         return Response("Ничего не найдено", status=404)
 
@@ -67,7 +76,7 @@ def create_employee():
         db.session.add(employee_profile)
         db.session.flush()
         db.session.commit()
-        return render_template("index.html", employees_data=employees_data)
+        return render_template("employees.html", employees_data=employees_data)
     elif request.method == "GET":
         return Response("Ничего не найдено", status=404)
 
@@ -86,7 +95,7 @@ def create_order():
         db.session.add(order_profile)
         db.session.flush()
         db.session.commit()
-        return render_template("index.html", order_data=order_data)
+        return render_template("orders.html", order_data=order_data)
     elif request.method == "GET":
         return Response("Ничего не найдено", status=404)
 
