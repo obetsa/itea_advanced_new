@@ -8,12 +8,15 @@ import json
 from datetime import datetime
 
 DB_URL = "postgresql://postgres:12345678@localhost:5432/order_service_db"
+# order_service_db
 
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
+
 db = SQLAlchemy(app)
+# db.create_all()
 
 
 class Departments(db.Model):
