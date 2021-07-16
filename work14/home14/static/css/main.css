@@ -1,0 +1,38 @@
+html {
+   min-height: 100%;
+   background-size: cover;
+   background-repeat: no-repeat;
+   background-position: center center;
+}
+h1 {
+    border: 2px #eee solid;
+    color: brown;
+    text-align: center;
+    padding: 10px;
+}
+
+body, html {
+  height: 100%;
+}
+
+img {
+  /* Set rules to fill background */
+  min-height: 100%;
+  min-width: 1024px;
+
+  width: 100%;
+  height: auto;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-size:100% 100%;
+  background-repeat: no-repeat;
+
+}
+
+@media screen and (max-width: 1024px) { /* Specific to this particular image */
+  img.bg {
+    left: 50%;
+    margin-left: -512px;   /* 50% */
+  }
+}
