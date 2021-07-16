@@ -13,7 +13,6 @@ from telebot import TeleBot  # pip install pyTelegramBotAPI
 from envparse import Env
 from logging import getLogger
 from app_2 import db, Profiles
-
 env = Env()
 logger = getLogger(__name__)
 TOKEN = env.str("TOKEN")
