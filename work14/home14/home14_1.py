@@ -132,3 +132,6 @@ if __name__ == '__main__':
     # app.run(debug=True)
     manager.run()
 
+# python home14_1.py db init
+# python home14_1.py db migrate
+# python home14_1.py db upgrade
