@@ -103,6 +103,10 @@ class Department(me.Document):
         self.created_dt = dt.now()
         return super().save(*args, **kwargs)
 
+    def update(self, **kwargs):
+        self.updated_dt = dt.now()
+        return super().update(**kwargs, updated_dt=self.updated_dt)
+
 
 class Employees(me.Document):
     created_dt = me.DateTimeField(required=True)
@@ -120,6 +124,10 @@ class Employees(me.Document):
     def save(self, *args, **kwargs):
         self.created_dt = dt.now()
         return super().save(*args, **kwargs)
+
+    def update(self, **kwargs):
+        self.updated_dt = dt.now()
+        return super().update(**kwargs, updated_dt=self.updated_dt)
 
 
 class Orders(me.Document):
@@ -143,6 +151,10 @@ class Orders(me.Document):
     def save(self, *args, **kwargs):
         self.created_dt = dt.now()
         return super().save(*args, **kwargs)
+
+    def update(self, **kwargs):
+        self.updated_dt = dt.now()
+        return super().update(**kwargs, updated_dt=self.updated_dt)
 
 
 """Создания:"""
