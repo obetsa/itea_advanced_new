@@ -87,22 +87,30 @@ orders = [
      }
 ]
 
+
 class Department(me.Document):
+    created_dt = me.DateTimeField(required=True)
+    updated_dt = me.DateTimeField(default=None)
     department_name = me.StringField(required=True)
 
     def __str__(self):
         return f"department_name: {self.department_name}"
 
+    def __repr__(self):
+        return f"Машинный вывод информации: department_name: {self.department_name}"
+
     def save(self, *args, **kwargs):
+        self.created_dt = dt.now()
         return super().save(*args, **kwargs)
 
     def update(self, **kwargs):
-        return super().update(**kwargs)
+        self.updated_dt = dt.now()
+        return super().update(**kwargs, updated_dt=self.updated_dt)
 
-    def delete(self, *args, **kwargs):
-        return super().delete(*args, **kwargs)
 
 class Employees(me.Document):
+    created_dt = me.DateTimeField(required=True)
+    updated_dt = me.DateTimeField(default=None)
     fio = me.StringField(required=True)
     position = me.StringField(required=True)
     department_id = me.ReferenceField(Department, reverse_delete_rule=me.CASCADE)
@@ -114,13 +122,12 @@ class Employees(me.Document):
         return f"Машинный вывод информации: fio: {self.fio} | position: {self.position}"
 
     def save(self, *args, **kwargs):
+        self.created_dt = dt.now()
         return super().save(*args, **kwargs)
 
     def update(self, **kwargs):
-        return super().update(**kwargs)
-
-    def delete(self, *args, **kwargs):
-        return super().delete(*args, **kwargs)
+        self.updated_dt = dt.now()
+        return super().update(**kwargs, updated_dt=self.updated_dt)
 
 
 class Orders(me.Document):
@@ -136,24 +143,129 @@ class Orders(me.Document):
         return f"created_dt: {self.created_dt} | order_type: {self.order_type} | description: {self.description} | " \
                f"status: {self.status} | serial_no: {self.serial_no} | creator_id: {self.creator_id}"
 
+    def __repr__(self):
+        return f"Машинный вывод информации: created_dt: {self.created_dt} | order_type: {self.order_type} | " \
+               f"description: {self.description} | " f"status: {self.status} | serial_no: {self.serial_no} | " \
+               f"creator_id: {self.creator_id}"
+
     def save(self, *args, **kwargs):
         self.created_dt = dt.now()
         return super().save(*args, **kwargs)
 
     def update(self, **kwargs):
-        return super().update(**kwargs)
-
-    def delete(self, *args, **kwargs):
-        return super().delete(*args, **kwargs)
+        self.updated_dt = dt.now()
+        return super().update(**kwargs, updated_dt=self.updated_dt)
 
 
-# for user_profile_data in zip(department, employees):
-#     print(user_profile_data)
-#     department_id = Department(**user_profile_data[0]).save()
-#     user = Employees(department_id=department_id, **user_profile_data[1]).save()
+"""Создания:"""
 
+for user_profile_data in zip(department, employees):
+    print(user_profile_data)
+    department_id = Department(**user_profile_data[0]).save()
+    user = Employees(department_id=department_id, **user_profile_data[1]).save()
 
 for orders_data in zip(employees, orders):
     print(orders_data)
     creator_id = Employees(**orders_data[0]).save()
     order = Orders(creator_id=creator_id, **orders_data[1]).save()
+
+"""Написать функции, которые будут:
+создавать/изменять/удалять новую заявку/сотрудника/департамент"""
+# department
+
+
+def create_dep():
+    Department(department_name='IT16').save()
+
+
+def update_dep():
+    dep = Department.objects(department_name='IT15')
+    dep.update(department_name='IT13')
+
+
+def delete_dep():
+    Department.objects.all().delete()
+
+
+# employees
+
+
+def create_empl():
+    Department(fio='Andrii', position='chef').save()
+
+
+def update_empl():
+    empl = Employees.objects(fio='Andrii', position='chef')
+    empl.update(position='boss')
+
+
+def delete_empl():
+    Employees.objects.all().delete()
+
+
+# orders
+
+
+def create_orders():
+    Orders(order_type='order_type2', description='some', status='Active', serial_no='77777',
+           creator_id='60d45cf006e8462e16157ad2').save()
+
+
+def update_orders():
+    orde = Orders.objects(order_type='order_type2')
+    orde.update(order_type='order_type3')
+
+
+def delete_orders():
+    Orders.objects.all().delete()
+
+
+"""All in json"""
+
+
+def employee_json():
+    data_from_mong_employee = Employees.objects()
+    for obj in data_from_mong_employee:
+        print(obj)
+        js_data = obj.to_json()
+        print(type(js_data), js_data)
+
+
+def department_json():
+    data_from_mong_department = Department.objects()
+    for obj in data_from_mong_department:
+        print(obj)
+        js_data = obj.to_json()
+        print(type(js_data), js_data)
+
+
+def orders_json():
+    data_from_mong_orders = Orders.objects()
+    for obj in data_from_mong_orders:
+        print(obj)
+        js_data = obj.to_json()
+        print(type(js_data), js_data)
+
+
+"""Id employee in json"""
+
+
+def json_id_employee(id_e):
+    res = Employees.objects.get(pk=id_e)
+    res_json = json.loads(res.to_json())
+    with open(f"{id}.json", "w") as json_f:
+        json.dump(res_json, json_f)
+
+
+def json_id_department(id_e):
+    res = Department.objects.get(pk=id_e)
+    res_json = json.loads(res.to_json())
+    with open(f"{id}.json", "w") as json_f:
+        json.dump(res_json, json_f)
+
+
+def json_id_orders(id_o):
+    res = Orders.objects.get(pk=id_o)
+    res_json = json.loads(res.to_json())
+    with open(f"{id}.json", "w") as json_f:
+        json.dump(res_json, json_f)
