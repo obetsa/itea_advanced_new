@@ -31,10 +31,10 @@ manager.add_command('db', MigrateCommand)
 
 # SELECT_QUERY_departments = """SELECT * FROM order_service_db.departments"""
 
+
 class Departments(db.Model):
     department_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     department_name = db.Column(db.String(75), unique=True)
-
 
 
 class Employees(db.Model):
@@ -90,6 +90,20 @@ def create_departments():
         return Response("Ничего не найдено", status=404)
 
 
+@app.route('/search_department_by_id/<string:search_by_id>', methods=['GET'])
+def search_department_by_id(search_by_id):
+    search_departments = Departments.query.filter_by(department_id=search_by_id).first()
+    return render_template("departments.html", search_departments=search_departments)
+
+
+@app.route('/delete_department_id/<string:delete_by_id>', methods=['DELETE'])
+def delete_department_id(delete_by_id):
+    delete_id = Departments.query.filter_by(department_id=delete_by_id).first()
+    db.session.delete(delete_id)
+    db.session.commit()
+    return f'OK, department: {delete_id} deleted'
+
+
 @app.route('/create_employee', methods=["POST", "GET"])
 def create_employee():
     if request.method == 'POST':
@@ -104,6 +118,20 @@ def create_employee():
         return render_template("employees.html", employees_data=employees_data)
     elif request.method == "GET":
         return Response("Ничего не найдено", status=404)
+
+
+@app.route('/search_employees_by_id/<string:search_by_id>', methods=['GET'])
+def search_employees_by_id(search_by_id):
+    search_employees = Employees.query.filter_by(employees_id=search_by_id).first()
+    return render_template("employees.html", search_employees=search_employees)
+
+
+@app.route('/delete_employees_id/<string:delete_by_id>', methods=['DELETE'])
+def delete_employees_id(delete_by_id):
+    delete_id = Employees.query.filter_by(employee_id=delete_by_id).first()
+    db.session.delete(delete_id)
+    db.session.commit()
+    return f'OK, employees: {delete_id} deleted'
 
 
 @app.route('/create_order', methods=["POST", "GET"])
@@ -124,6 +152,30 @@ def create_order():
     elif request.method == "GET":
         return Response("Ничего не найдено", status=404)
 
+
+@app.route('/search_order_by_id/<string:search_by_id>', methods=['GET'])
+def search_order_by_id(search_by_id):
+    search_order = Orders.query.filter_by(order_id=search_by_id).first()
+    return render_template("orders.html", search_order=search_order)
+
+
+@app.route('/change_order_status', methods=['PATCH'])
+def change_order_status():
+    if request.method == 'PATCH':
+        order_status = json.loads(request.data)
+        get_id = Orders.query.filter_by(order_id=order_status['order_id']).first()
+        get_id.status = order_status['Closed']
+        get_id.update_dt = datetime.now()
+        db.session.commit()
+        return f'OK: Status changed'
+
+
+@app.route('/delete_order_id/<string:delete_by_id>', methods=['DELETE'])
+def delete_order_id(delete_by_id):
+    delete_id = Orders.query.filter_by(order_id=delete_by_id).first()
+    db.session.delete(delete_id)
+    db.session.commit()
+    return f'OK, order: {delete_by_id} deleted'
 
 # select_data()
 
