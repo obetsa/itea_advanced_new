@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Orders</title>
+{% endblock %}
+
+{% block content %}
+<h1>Orders</h1>
+{% for order in orde %}
+<li>{{ order }}</li>
+{% endfor %}}
+{% endblock %}
